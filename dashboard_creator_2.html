@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 10px; }
+      canvas { max-width: 100%; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h2>Sales Dashboard</h2>
+    <canvas id="salesChart"></canvas>
+
+    <script>
+      google.script.run
+        .withSuccessHandler(displayChart)
+        .getSalesData();
+
+      function displayChart(data) {
+        var labels = [];
+        var sales = [];
+        for (var i = 1; i < data.length; i++) {
+          labels.push(data[i][1]); // Product names
+          sales.push(data[i][2]);  // Sales values
+        }
+
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Sales ($)',
+              data: sales,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
